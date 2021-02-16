@@ -42,9 +42,11 @@ public class MarketPriceConverterTest {
     @Test
     public void testEmptyFields() {
         String line = "1,BRL/USD,1.0,,01-01-2020 00:00:00:000";
-        assertThrows(Exception.class, () ->  converter.convert(line));
+        Optional<MarketPrice> optionalMarketPrice = converter.convert(line);
+        assertFalse(optionalMarketPrice.isPresent());
     }
 
+    @Test
     public void testSuccess() {
         String line = "1,BRL/USD,1.0,5.0,01-01-2020 00:00:00:000";
         Optional<MarketPrice> optionalMarketPrice = converter.convert(line);
