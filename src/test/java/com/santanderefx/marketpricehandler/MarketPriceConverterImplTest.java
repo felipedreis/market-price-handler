@@ -2,19 +2,20 @@ package com.santanderefx.marketpricehandler;
 
 import com.santanderefx.marketpricehandler.persistence.MarketPrice;
 import com.santanderefx.marketpricehandler.util.MarketPriceConverter;
-import org.junit.jupiter.api.BeforeEach;
+import com.santanderefx.marketpricehandler.util.MarketPriceConverterImpl;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class MarketPriceConverterTest {
+public class MarketPriceConverterImplTest {
     private MarketPriceConverter converter;
 
-    public MarketPriceConverterTest(){
-        converter = new MarketPriceConverter();
+    public MarketPriceConverterImplTest(){
+        converter = new MarketPriceConverterImpl();
     }
 
     @Test

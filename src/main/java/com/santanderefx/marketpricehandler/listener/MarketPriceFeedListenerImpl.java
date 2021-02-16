@@ -2,7 +2,8 @@ package com.santanderefx.marketpricehandler.listener;
 
 import com.santanderefx.marketpricehandler.persistence.MarketPrice;
 import com.santanderefx.marketpricehandler.service.MarketPriceService;
-import com.santanderefx.marketpricehandler.util.MarketPriceConverter;
+import com.santanderefx.marketpricehandler.util.MarketPriceCommissionAdder;
+import com.santanderefx.marketpricehandler.util.MarketPriceConverterImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,12 +17,16 @@ public class MarketPriceFeedListenerImpl implements MarketPriceFeedListener {
 
     private MarketPriceService marketPriceService;
 
-    private MarketPriceConverter converter;
+    private MarketPriceConverterImpl converter;
+
+    private MarketPriceCommissionAdder commissionAdder;
 
     @Autowired
-    public MarketPriceFeedListenerImpl(MarketPriceService marketPriceService, MarketPriceConverter converter) {
+    public MarketPriceFeedListenerImpl(MarketPriceService marketPriceService, MarketPriceConverterImpl converter,
+                                       MarketPriceCommissionAdder commissionAdder) {
         this.marketPriceService = marketPriceService;
         this.converter = converter;
+        this.commissionAdder = commissionAdder;
     }
 
     @Override
@@ -30,6 +35,7 @@ public class MarketPriceFeedListenerImpl implements MarketPriceFeedListener {
 
         Optional<MarketPrice> marketPriceOptional = converter.convert(feedLine);
 
-        marketPriceOptional.ifPresent(marketPriceService::save);
+        marketPriceOptional.map(commissionAdder::apply)
+                .ifPresent(marketPriceService::save);
     }
 }

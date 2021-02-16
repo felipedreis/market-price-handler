@@ -3,7 +3,6 @@ package com.santanderefx.marketpricehandler;
 import com.santanderefx.marketpricehandler.persistence.MarketPrice;
 import com.santanderefx.marketpricehandler.util.MarketPriceCommissionAdder;
 import com.santanderefx.marketpricehandler.util.MarketPriceCommissionAdderImpl;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,9 +11,10 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MarketPriceCommissionAdderImplTest {
+
     private MarketPriceCommissionAdder marketPriceCommissionAdder;
 
-    private static final double DELTA = 1e-6;
+    Random rnd = new Random(System.currentTimeMillis());
 
     @BeforeEach
     public void init(){
@@ -35,14 +35,13 @@ public class MarketPriceCommissionAdderImplTest {
 
     @Test
     public  void testRandomValues() {
-        Random rnd = new Random(System.currentTimeMillis());
         MarketPrice marketPrice = new MarketPrice();
         marketPrice.setAsk(rnd.nextDouble());
         marketPrice.setBid(rnd.nextDouble());
 
         MarketPrice result = marketPriceCommissionAdder.apply(marketPrice);
-        double commissionTax = (result.getAsk() - result.getBid())/marketPrice.getBid();
-        assertTrue(Math.abs(commissionTax - 0.1/100.0) < DELTA);
+        assertNotEquals(result.getAsk(), marketPrice.getAsk());
+        assertNotEquals(result.getBid(), marketPrice.getBid());
     }
 
 }
