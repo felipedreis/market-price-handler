@@ -35,7 +35,10 @@ public class MarketPriceFeedListenerImpl implements MarketPriceFeedListener {
 
         Optional<MarketPrice> marketPriceOptional = converter.convert(feedLine);
 
-        marketPriceOptional.map(commissionAdder::apply)
-                .ifPresent(marketPriceService::save);
+        if (marketPriceOptional.isPresent()) {
+            MarketPrice parsed = marketPriceOptional.get();
+            MarketPrice commissioned = commissionAdder.apply(parsed);
+            marketPriceService.save(commissioned);
+        }
     }
 }
