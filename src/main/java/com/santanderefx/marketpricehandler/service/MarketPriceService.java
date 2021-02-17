@@ -1,13 +1,15 @@
 package com.santanderefx.marketpricehandler.service;
 
 import com.santanderefx.marketpricehandler.persistence.MarketPrice;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface MarketPriceService {
-    void save(MarketPrice marketPrice);
+    MarketPrice save(MarketPrice marketPrice);
 
-    MarketPrice find(long id);
+    Optional<MarketPrice> find(long id);
 
-    List<MarketPrice> findAll();
+    Page<MarketPrice> findAll(Pageable pageable);
 }

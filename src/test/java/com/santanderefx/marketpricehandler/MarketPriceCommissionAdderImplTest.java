@@ -42,6 +42,9 @@ public class MarketPriceCommissionAdderImplTest {
         MarketPrice result = marketPriceCommissionAdder.apply(marketPrice);
         assertNotEquals(result.getAsk(), marketPrice.getAsk());
         assertNotEquals(result.getBid(), marketPrice.getBid());
+
+        assertEquals(result.getAsk(), marketPrice.getAsk() * (1 + MarketPriceCommissionAdderImpl.COMMISSION_TAX/100.0));
+        assertEquals(result.getBid(), marketPrice.getBid() * (1 - MarketPriceCommissionAdderImpl.COMMISSION_TAX/100.0));
     }
 
 }
